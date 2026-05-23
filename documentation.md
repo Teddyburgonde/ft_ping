@@ -155,16 +155,18 @@ if (getuid() != 0)
 4. recvfrom()     → recevoir la réponse
 ```
 
----
 
-## Roadmap - Mandatory
+## Structure
 
-| Étape | Tâche |
-|---|---|
-| 1 | Mise en place : structure du projet, Makefile, vérification root, parsing des arguments |
-| 2 | Résolution du nom de domaine avec `getaddrinfo` |
-| 3 | Créer la raw socket avec `IPPROTO_ICMP` |
-| 4 | Construire le paquet ICMP (header + checksum) |
-| 5 | Envoyer et recevoir : `sendto` + `recvfrom` + calcul du temps |
-| 6 | Gestion du Ctrl+C avec `SIGINT` + affichage des statistiques |
-| 7 | Tests et corrections |
+ft_ping/
+├── Makefile
+├── includes/
+│   └── ft_ping.h
+└── src/
+    ├── main.c          -> point d'entrée, vérification root, parsing args
+    ├── socket.c        -> création de la raw socket
+    ├── dns.c           -> getaddrinfo (nom de domaine → IP)
+    ├── packet.c        -> construction du header ICMP + checksum
+    ├── ping.c          -> sendto + recvfrom + gettimeofday
+    └── signal.c        -> gestion du SIGINT + affichage des statistiques
+
