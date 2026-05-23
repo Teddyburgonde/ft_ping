@@ -1,0 +1,26 @@
+Ping:
+
+C'est une commande qui envoie un message a une adresse(ex google.com) et attend une reponse.
+Cela sert à savoir si une machine est joignable sur le réseau, et combien de temps le message met pour faire l'aller-retour.
+
+Composition d'un paquet: 
+- L'en-tête(header). Elle contient les infos pour acheminer le paquet: adresse de départ, adresse d'arrivée, etc...
+- Les données(payload): C'est le contenu, ce qu'on veut vraiment envoyer. 
+
+payload: 
+Dedans il y a des données sans aucune importance, ce qui compte pour ping c'est uniquement: 
+- Est-ce que le paquet est arrivé ?
+- En combien de temps ?
+
+Exemple:
+
+PING google.com (142.251.142.14): 56 data bytes
+64 bytes from 142.251.142.14: icmp_seq=0 ttl=117 time=15.109 ms
+
+ping google.com -> j'envoie un paquet vers google.com
+142.251.142.14 -> Adresse ip de google.com
+56 data bytes -> la taille du payload 
+64 bytes -> la taille du paquet reçu en retour (payload + header) 
+icmp_seq=0 -> le numero du paquet
+ttl=117 ->  C'est un compteur qui diminue de 1 à chaque fois que le paquet passe par un routeur. Quand il atteint 0, le paquet est détruit.
+time=15.109ms -> le temps aller-retour du paquet
