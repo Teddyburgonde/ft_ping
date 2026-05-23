@@ -46,11 +46,46 @@ Permet de transofrmer un nom de domaine en adresse ip
 Exemple : google.com -> 172.217.22.110
 
 
+sendto: 
+Fonction qui permet d'envoyer uin paquet sur le réseau. 
 
-sendto / recvfrom - comment envoyer et recevoir des paquets en C
-gettimeofday - comment mesurer le temps en C
-Les signaux en C - pour gérer le Ctrl+C proprement
-Les privilèges root - pourquoi ping a besoin d'être root
+recvfrom:
+C'est la fonction qui permet de recevoir un paquet sur le réseau. 
+
+gettimeofday:
+Fonction qui permet de mesurer le temps en C. 
+Exemple: time=15ms
+Le principe:
+- J'enregistre le temps avant d'envoyer le paquet
+- J'enregistre le temps après avoir reçu la réponse
+- Je fais la difference.
+
+
+1. gettimeofday (start)
+2. sendto()
+3. recvfrom()
+4. gettimeofday (end)
+5. résultat = end - start
+
+
+Les signaux en C:
+Permet de gerer le ctrl+C pour pas qu'il s'arrete brutalement.
+Il affiche un résumé.
+Exemple: 
+--- google.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 15ms
+Ce résumé c'est ->
+- Combien de paquets envoyés
+- Combien de paquets reçus
+- Le pourcentage de paquets perdus
+- Le temps min/max/avg
+
+
+
+Les privilèges root:
+
+
+- pourquoi ping a besoin d'être root
 
 
 
@@ -59,8 +94,6 @@ Ordre:
 2. socket() -> creer la raw socket 
 3. sendto() -> envoyer le paquet
 4. recvfrom() -> recevoir la reponse.
-
-
 
 
 
