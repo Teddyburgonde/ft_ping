@@ -1,3 +1,40 @@
+Notions a connaitre: 
+
+ICMP: 
+ Protocole utilisé par ping pour envoyer ses paquets.
+Echo Request -> j'envoies
+Echo Reply -> Je reçois
+
+Socket:
+C'est une porte de communication entre mon programme et un réseau.
+
+Raw sockets -> c'est une socket mais que je construis moi même le header ICMP.
+
+int rawSocket = rawSocket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+if (rawSocket < 0) 
+{
+	perror("socket() error");
+	exit(2);
+}
+printf("OK: a raw socket is created.\n");
+
+
+
+La structure d'un paquet ICMP - header ICMP, checksum
+
+
+
+
+
+La structure d'un paquet IP - header IP
+getaddrinfo / gethostbyname - comment résoudre un nom de domaine en IP
+sendto / recvfrom - comment envoyer et recevoir des paquets en C
+gettimeofday - comment mesurer le temps en C
+Les signaux en C - pour gérer le Ctrl+C proprement
+Les privilèges root - pourquoi ping a besoin d'être root
+
+
+
 Ping:
 
 C'est une commande qui envoie un message a une adresse(ex google.com) et attend une reponse.
@@ -24,3 +61,4 @@ ping google.com -> j'envoie un paquet vers google.com
 icmp_seq=0 -> le numero du paquet
 ttl=117 ->  C'est un compteur qui diminue de 1 à chaque fois que le paquet passe par un routeur. Quand il atteint 0, le paquet est détruit.
 time=15.109ms -> le temps aller-retour du paquet
+
