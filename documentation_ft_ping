@@ -20,18 +20,48 @@ printf("OK: a raw socket is created.\n");
 
 
 
-La structure d'un paquet ICMP - header ICMP, checksum
+La structure d'un paquet ICMP:
+- header ICMP
+- payload
+
+Le header ICMP contient : 
+- type -> Echo Request ou Echo Reply
+- code -> précision sur le type.
+- checksum -> pour verifier que le paquet n'est pas corrompu
+- id -> identifiant du paquet
+- sequence -> numero du paquet
+
+
+La structure d'un header IP: 
+- version → IPv4 ou IPv6
+- ttl → Le compteur 
+- protocol → quel protocole est dans le payload (ICMP, TCP, UDP...)
+- saddr → adresse IP source
+- daddr → adresse IP destination
+- check → le checksum du header IP
+
+
+getaddrinfo: 
+Permet de transofrmer un nom de domaine en adresse ip 
+Exemple : google.com -> 172.217.22.110
 
 
 
-
-
-La structure d'un paquet IP - header IP
-getaddrinfo / gethostbyname - comment résoudre un nom de domaine en IP
 sendto / recvfrom - comment envoyer et recevoir des paquets en C
 gettimeofday - comment mesurer le temps en C
 Les signaux en C - pour gérer le Ctrl+C proprement
 Les privilèges root - pourquoi ping a besoin d'être root
+
+
+
+Ordre: 
+1. getaddrinfo() -> google.com en addresse ip
+2. socket() -> creer la raw socket 
+3. sendto() -> envoyer le paquet
+4. recvfrom() -> recevoir la reponse.
+
+
+
 
 
 
