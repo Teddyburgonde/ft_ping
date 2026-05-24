@@ -1,5 +1,6 @@
 #include "../includes/ft_ping.h"
 
+// Permet de savoir si utilisateur est root.
 int	is_root(void) 
 {
 	if (getuid() != 0)
