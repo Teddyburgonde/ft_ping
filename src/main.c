@@ -1,7 +1,9 @@
 #include "../includes/ft_ping.h"
 
-// Permet de savoir si utilisateur est root.
-int	is_root(void) 
+/* 
+Permet de savoir si utilisateur est root.
+*/
+int	is_root(void)
 {
 	if (getuid() != 0)
 	{
@@ -17,11 +19,10 @@ int is_verbose(char* argv)
 	return false;
 }
 
-
 int	main(int argc, char **argv)
 {
 	int	verbose; 
-	
+
 	verbose = 0;
 	if (argc < 2 || argc > 3)
 	{
@@ -42,4 +43,3 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 }
-

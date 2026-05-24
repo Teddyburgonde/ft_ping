@@ -1,12 +1,12 @@
 Étape 1 : Mise en place ❌
 
 - Créer la structure du projet (fichiers, Makefile) ✅️
-- Vérifier que l'utilisateur est root (getuid) . (main.c) ❌
+- Vérifier que l'utilisateur est root (getuid) . (main.c) ✅️
 - Parser les arguments (ft_ping google.com, options -v et -?) (main.c)  ❌
 
-Étape 2 : Résolution du nom de domaine (dns.c) ❌
+Étape 2 : Résolution du nom de domaine (dns.c) ✅️
 
-- Utiliser getaddrinfo pour convertir google.com en IP ❌
+- Utiliser getaddrinfo pour convertir google.com en IP ✅️
  
 Étape 3 : Créer la raw socket (socket.c) ❌
 
@@ -34,8 +34,11 @@
 
 ❌ ✅️
 
+// JE SUIS ICI 
 
+Je dois bien comprendre la fonction hostname_to_ip dans dns.c
 
+// Signaux
 void handler(int signum)
 {
 	if (signum == SIGINT)
