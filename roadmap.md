@@ -34,3 +34,16 @@
 
 ❌ ✅️
 
+
+
+void handler(int signum)
+{
+	if (signum == SIGINT)
+		pingloop = 0;
+	else if (signum == SIGALRM)
+		send_packet = 1;
+}
+
+	signal(SIGINT, &handler);
+	signal(SIGALRM, &handler);
+
