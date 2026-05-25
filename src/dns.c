@@ -1,22 +1,6 @@
 #include "../includes/ft_ping.h"
 
 /*
-Récupere l'adresse du destinataire
-*/
-char	*get_destination(int argc, char **argv)
-{
-	if (argc == 2)
-	{
-		return argv[1];
-	}
-	if (argc == 3)
-	{
-		return argv[2];
-	}
-	return NULL;
-}
-
-/*
 Transforme le nom de domaine en binaire
 */
 struct addrinfo	*hostname_to_ip(char *hostname)

@@ -10,9 +10,16 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 
-char	*get_destination(int argc, char **argv);
+/* dns.c */
 struct addrinfo	*hostname_to_ip(char *hostname);
 char	*ip_to_str(struct addrinfo *results);
+
+
+/* parsing.c */
+char	*get_destination(int argc, char **argv);
+void	parse_args(int argc, char **argv);
 int		is_root(void);
+
+
 
 #endif

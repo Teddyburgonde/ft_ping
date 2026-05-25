@@ -1,45 +1,29 @@
 #include "../includes/ft_ping.h"
 
-// /* 
-// Permet de savoir si utilisateur est root.
-// */
-// int	is_root(void)
-// {
-// 	if (getuid() != 0)
-// 	{
-// 		return false;
-// 	}
-// 	return true;
-// }
-
-// int is_verbose(char* argv)
-// {
-// 	if (strcmp(argv, "-v") == 0)
-// 		return true;
-// 	return false;
-// }
-
 int	main(int argc, char **argv)
 {
-	// int	verbose; 
+	struct addrinfo *results;
+	int verbose;
+	char *destination;
+	char *ip;
 
-	// verbose = 0;
-	// if (argc < 2 || argc > 3)
-	// {
-	// 	printf("./ft_ping -v recipient");
-	// 	return (1);
-	// }
-	// if (is_verbose(argv[1]) == true)
-	// {
-	// 	verbose = 1;
-	// }
-	// else if (strcmp(argv[1],"-?") == 0)
-	// {
+	results = NULL;
+	verbose = 0;
+	ip = NULL;
+	destination = NULL;
+	parse_args(argc, argv);
+	destination = get_destination(argc, argv);
+	results = hostname_to_ip(destination);
+	if (results == NULL)
+	{
+    	printf("Error, hostname_to_ip failed\n");
+    	return (1);
+	}
+	ip = ip_to_str(results);
+	if (strcmp(argv[1], "-v") == 0)
+    	verbose = 1;
+	printf("verbose: %d\n", verbose);
+	printf("ip: %s\n", ip);
 
-	// }
-	// if (is_root() == false)
-	// {
-	// 	printf("ft_ping: must be run as root\n");
-	// 	return (1);
-	// }
+	freeaddrinfo(results);
 }

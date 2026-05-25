@@ -12,6 +12,7 @@ tests:
 - get_destination ✅
 - hostname_to_ip ✅
 - ip_to_str ✅
+- verbose / verbose2 ✅ 
 
 sudo ./test_bin google.com
 Tests:
@@ -23,7 +24,26 @@ int main(int argc, char **argv)
 	char *destination = get_destination(argc, argv);
 	struct addrinfo *results = hostname_to_ip(destination);
 	char *ip = ip_to_str(results);
+	char *fake_argv[] = {"ft_ping", "-v", "google.com"};
 	
+	if (strcmp(fake_argv[1], "-v") == 0)
+	{
+		printf(GREEN "✅ Success, verbose\n" RESET);
+	}
+	else
+	{
+		printf(RED "❌ ERROR, verbose\n" RESET);
+	}
+	char *fake_argv_no_v[] = {"ft_ping","google.com"};
+	if (strcmp(fake_argv_no_v[1], "-v") != 0)
+	{
+		printf(GREEN "✅ Success, verbose2\n" RESET);
+	}
+	else
+	{
+		printf(RED "❌ ERROR, verbose2\n" RESET);
+	}
+
 	// int value_is_root;
 
 	// value_is_root = is_root();

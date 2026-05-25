@@ -13,6 +13,7 @@ CFLAGS = -Wall -Werror -Wextra -g
 SRCS = src/dns.c \
 		  src/main.c \
 		  src/packet.c \
+		  src/parsing.c \
 		  src/ping.c \
 		  src/print.c \
 		  src/signal.c \
