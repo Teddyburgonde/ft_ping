@@ -16,28 +16,37 @@ char	*get_destination(int argc, char **argv)
 	return NULL;
 }
 
-
 /*
-Transforme un hostname en adresse ip
+Transforme le nom de domaine en binaire
 */
-char	*hostname_to_ip(char *hostname)
+struct addrinfo	*hostname_to_ip(char *hostname)
 {
-	struct addrinfo		hints;
-	struct addrinfo		*results;
-	struct sockaddr_in	*ipv4;
-	char				*ip_str;
-	int					status;
+	struct addrinfo	hints;
+	struct addrinfo *results;
+	int	status;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_RAW;
 	status = getaddrinfo(hostname, NULL, &hints, &results);
 	if (status != 0)
 	{
 		printf("ft_ping: %s: %s\n", hostname, gai_strerror(status));
 		exit(1);
 	}
+	return results;
+}
+
+/*
+Transforme le binaire en string lisible
+*/
+char	*ip_to_str(struct addrinfo *results)
+{
+	struct sockaddr_in	*ipv4;
+	char				*ip_str;
+
 	ipv4 = (struct sockaddr_in *)results->ai_addr;
 	ip_str = inet_ntoa(ipv4->sin_addr);
-	freeaddrinfo(results);
+
 	return ip_str;
 }

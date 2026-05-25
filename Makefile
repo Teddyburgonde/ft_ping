@@ -11,12 +11,12 @@ CFLAGS = -Wall -Werror -Wextra -g
 #============= MANDATORY SOURCES ============#
 
 SRCS = src/dns.c \
-          src/main.c \
-          src/packet.c \
-          src/ping.c \
-          src/print.c \
-          src/signal.c \
-          src/socket.c
+		  src/main.c \
+		  src/packet.c \
+		  src/ping.c \
+		  src/print.c \
+		  src/signal.c \
+		  src/socket.c 
 
 #============ TRANSFORM .c TO .o ============#
 
