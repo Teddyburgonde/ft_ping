@@ -12,16 +12,33 @@ tests:
 - get_destination ✅
 - hostname_to_ip ✅
 - ip_to_str ✅
+
+sudo ./test_bin google.com
+Tests:
+- is_root ✅
 */
+
 int main(int argc, char **argv)
 {
 	char *destination = get_destination(argc, argv);
 	struct addrinfo *results = hostname_to_ip(destination);
 	char *ip = ip_to_str(results);
 	
+	// int value_is_root;
+
+	// value_is_root = is_root();
+	// if (value_is_root == true)
+	// {
+	// 	printf(GREEN "✅ Success, is_root\n" RESET);
+	// }
+	// else
+	// {
+	// 	printf(RED "❌ ERROR, is_root\n" RESET);
+	// }
+
 	if (strcmp(destination, "google.com") == 0)
 	{
-    	printf(GREEN "✅ Succes, get_destination\n" RESET);
+    	printf(GREEN "✅ Success, get_destination\n" RESET);
 	}
 	else
 	{
@@ -29,8 +46,8 @@ int main(int argc, char **argv)
 	}
 	if (ip != NULL)
 	{
-		printf(GREEN "✅ Succes, hostname_to_ip\n" RESET);
-		printf(GREEN "✅ Succes, ip_to_str\n" RESET);
+		printf(GREEN "✅ Success, hostname_to_ip\n" RESET);
+		printf(GREEN "✅ Success, ip_to_str\n" RESET);
 	}
 	else
 	{
@@ -38,9 +55,9 @@ int main(int argc, char **argv)
     	printf(RED "❌ ERROR, ip_to_str\n" RESET);
 	}
 
-	printf("destination: %s\n", destination);
-	printf("ip: %s\n", ip);
+	// printf("destination: %s\n", destination);
+	// printf("ip: %s\n", ip);
 
 	freeaddrinfo(results); // liberation de la memoire.
-}	
+}
 	
