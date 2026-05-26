@@ -42,6 +42,9 @@ Je n'ai pas encore tester:
 void    build_icmp_header(struct icmphdr *icmphdr, int sequence) -> packet.c
 
 
+ping.c
+Je suis en train de faire la fonction:
+receive_ping -> reçoit la réponse et affiche le résultat
 
 
 
