@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <stdint.h>
+#include <netinet/ip_icmp.h>
 
 /* dns.c */
 struct addrinfo	*hostname_to_ip(char *hostname);

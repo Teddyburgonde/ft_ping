@@ -35,8 +35,15 @@
 ❌ ✅️
 
 // JE SUIS ICI 
+Je n'ai pas encore tester:
 
-Je dois bien comprendre la fonction hostname_to_ip dans dns.c
+- int create_raw_socket(void) -> socket.c
+- uint16_t calculate_checksum(void *data, int len) -> packet.c 
+void    build_icmp_header(struct icmphdr *icmphdr, int sequence) -> packet.c
+
+
+
+
 
 // Signaux
 void handler(int signum)
