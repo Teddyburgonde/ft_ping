@@ -1,3 +1,5 @@
+#include "../includes/ft_ping.h"
+
 /*
 ** Envoie un paquet ICMP Echo Request vers la destination.
 ** Quitte le programme si l'envoi echoue.
@@ -14,10 +16,52 @@ void send_ping(int raw_socket, struct icmphdr *icmphdr, struct sockaddr *addr)
 	}
 }
 
-receive_ping -> reçoit la réponse et affiche le résultat
+/*
+** Attend et recupere un paquet ICMP sur le reseau.
+** Verifie que le paquet appartient bien a mon ft_ping via le PID.
+** Retourne le nombre d'octets reçus ou -1 en cas d'erreur.
+*/
+int receive_ping(int raw_socket, struct sockaddr *addr)
+{
+	int nb_octets;
+	char buffer[1024];
+	socklen_t addr_len = sizeof(*addr);
+
+	nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, addr, &addr_len);
+	if (nb_octets == -1)
+	{
+		perror("recvfrom");
+		return (-1);
+	}
+	struct icmphdr *icmp = (struct icmphdr *)(buffer + 20);
+	if (icmp->un.echo.id == getpid())
+	{
+		return nb_octets;
+	}
+	return (-1);
+}
 
 
 
+
+ping_loop c'est la boucle principale de ft_ping. Elle doit :
+
+Afficher la ligne de départ : PING google.com (172.217.22.110): 56 data bytes
+Boucler indéfiniment jusqu'au Ctrl+C :
+
+Construire le header ICMP avec build_icmp_header
+Démarrer le chronomètre
+Envoyer le paquet avec send_ping
+Recevoir la réponse avec receive_ping
+Arrêter le chronomètre
+Afficher le résultat
+Incrémenter la sequence
+Attendre 1 seconde
+
+
+
+La signature :
+void    ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip);
 
 ping_loop -> la boucle principale qui appelle les deux
 
@@ -28,9 +72,6 @@ ping_loop -> la boucle principale qui appelle les deux
 
 
 
-## recvfrom
-Fonction qui permet de recevoir un paquet depuis le réseau.
-> ⚠️ recvfrom est **bloquant** : le programme attend jusqu'à recevoir un paquet.
 
 ---
 
