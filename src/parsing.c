@@ -29,8 +29,8 @@ char	*get_destination(int argc, char **argv)
 }
 
 /*
-Verifie que les arguments sont valides et que l'utilisateur est root.
-Quitte le programme si une erreur est detectee.
+** Verifie que les arguments sont valides et que l'utilisateur est root.
+** Quitte le programme si une erreur est detectee.
 */
 void parse_args(int argc, char **argv)
 {

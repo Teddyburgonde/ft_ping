@@ -11,10 +11,28 @@
 #include <arpa/inet.h>
 #include <stdint.h>
 #include <netinet/ip_icmp.h>
+#include <signal.h>
+
+
+
+typedef struct s_stats
+{
+    int     packets_sent;
+    int     packets_received;
+    double  time_min;
+    double  time_max;
+    double  time_total;
+} t_stats;
+
+
 
 /* dns.c */
 struct addrinfo	*hostname_to_ip(char *hostname);
 char	*ip_to_str(struct addrinfo *results);
+
+
+/* packet.c */
+void    build_icmp_header(struct icmphdr *icmphdr, int sequence);
 
 
 /* parsing.c */
@@ -22,6 +40,14 @@ char	*get_destination(int argc, char **argv);
 void	parse_args(int argc, char **argv);
 int		is_root(void);
 
+/* ping.c */
+void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, t_stats *stats);
 
+
+/* signal.c */
+void	handler(int sig);
+
+/* socket.c */
+int		create_raw_socket(void);
 
 #endif

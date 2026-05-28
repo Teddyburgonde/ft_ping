@@ -6,7 +6,11 @@ int	main(int argc, char **argv)
 	int verbose;
 	char *destination;
 	char *ip;
+	t_stats stats;
+	int raw_socket;
 
+
+	memset(&stats, 0, sizeof(stats));
 	results = NULL;
 	verbose = 0;
 	ip = NULL;
@@ -22,8 +26,10 @@ int	main(int argc, char **argv)
 	ip = ip_to_str(results);
 	if (strcmp(argv[1], "-v") == 0)
     	verbose = 1;
-	printf("verbose: %d\n", verbose);
-	printf("ip: %s\n", ip);
-
+	raw_socket = create_raw_socket();
+	g_stats = &stats;
+	ping_loop(raw_socket, results->ai_addr, destination, ip, &stats);
 	freeaddrinfo(results);
+
+	return (0);
 }

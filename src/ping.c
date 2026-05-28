@@ -4,7 +4,7 @@
 ** Envoie un paquet ICMP Echo Request vers la destination.
 ** Quitte le programme si l'envoi echoue.
 */
-void send_ping(int raw_socket, struct icmphdr *icmphdr, struct sockaddr *addr)
+static void send_ping(int raw_socket, struct icmphdr *icmphdr, struct sockaddr *addr)
 {
 	int statut;
 
@@ -19,20 +19,23 @@ void send_ping(int raw_socket, struct icmphdr *icmphdr, struct sockaddr *addr)
 /*
 ** Attend et recupere un paquet ICMP sur le reseau.
 ** Verifie que le paquet appartient bien a mon ft_ping via le PID.
+** Recupere le TTL depuis le header IP du paquet reçu.
 ** Retourne le nombre d'octets reçus ou -1 en cas d'erreur.
 */
-int receive_ping(int raw_socket, struct sockaddr *addr)
+static int receive_ping(int raw_socket, struct sockaddr *addr,  int *ttl)
 {
 	int nb_octets;
 	char buffer[1024];
 	socklen_t addr_len = sizeof(*addr);
-
+	struct iphdr *ip_header = (struct iphdr *)buffer;
+	
 	nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, addr, &addr_len);
 	if (nb_octets == -1)
 	{
 		perror("recvfrom");
 		return (-1);
 	}
+	*ttl = ip_header->ttl;
 	struct icmphdr *icmp = (struct icmphdr *)(buffer + 20);
 	if (icmp->un.echo.id == getpid())
 	{
@@ -41,61 +44,50 @@ int receive_ping(int raw_socket, struct sockaddr *addr)
 	return (-1);
 }
 
-#include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
 
-
-void handler(int sig)
-{
-    (void)sig;
-    printf("\nArrêt propre du programme\n");
-}
-
-void    ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip)
+/*
+** Boucle principale de ft_ping.
+** Envoie un paquet ICMP Echo Request chaque seconde et affiche le resultat.
+** S'arrete proprement sur Ctrl+C via le signal SIGINT.
+*/
+void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, t_stats *stats)
 {	
-	char *destinataire;
-	char *str;
-	int start;
-	int end;
 	int sequence;
+	struct icmphdr icmphdr;
+	int nb_bytes;
+	int ttl;
+	struct timeval start;
+	struct timeval end;
+	double time_result;
 
-	destinataire = NULL;
-	str = NULL;
-	start = 0;
-	end = 0;
 	sequence = 0;
-	int result ;
-	result = 0;
+	time_result = 0;
+	signal(SIGINT, handler);
+	printf("PING %s\n (%s): 56 data bytes ",  hostname, ip);
 	while (1)
 	{
-		signal(SIGINT, handler);
-		destinataire = get_destination(argc, argv);
-		str = ip_to_str(results);
-		build_icmp_header(icmphdr, sequence);
-		gettimeofday(start);
-		// Je suis ici
-		send_ping(raw_socket, struct icmphdr *icmphdr, addr);
-		receive_ping(raw_socket, addr);
-		gettimeofday(end);
-		result = end - start;
-		printf(result);
+		build_icmp_header(&icmphdr, sequence);
+		gettimeofday(&start, NULL);
+		send_ping(raw_socket, &icmphdr, addr);
+		stats->packets_sent++;
+		nb_bytes = receive_ping(raw_socket, addr, &ttl);
+		gettimeofday(&end, NULL);
+		time_result = (end.tv_sec - start.tv_sec) * 1000.0 + (end.tv_usec - start.tv_usec) / 1000.0;
+        if (nb_bytes != -1)
+		{
+			stats->packets_received++;
+            if (stats->time_min == 0 || time_result < stats->time_min)
+				stats->time_min = time_result;
+            if (time_result > stats->time_max)
+				stats->time_max = time_result;
+			stats->time_total += time_result;
+			printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", nb_bytes, ip, sequence, ttl, time_result);
+		}
 		sequence++;
-		wait(1);
-		printf("PING %s\n (%s): 56 data bytes ",  destinataire, str);
+		sleep(1);
 	}
 }
 
-
-
-Construire le header ICMP avec build_icmp_header
-Démarrer le chronomètre
-Envoyer le paquet avec send_ping
-Recevoir la réponse avec receive_ping
-Arrêter le chronomètre
-Afficher le résultat
-Incrémenter la sequence
-Attendre 1 seconde
 
 
 

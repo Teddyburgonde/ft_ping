@@ -1,26 +1,26 @@
-Étape 1 : Mise en place ❌
+Étape 1 : Mise en place ✅️
 
 - Créer la structure du projet (fichiers, Makefile) ✅️
 - Vérifier que l'utilisateur est root (getuid) . (main.c) ✅️
-- Parser les arguments (ft_ping google.com, options -v et -?) (main.c)  ❌
+- Parser les arguments (ft_ping google.com, options -v et -?) (main.c)  ✅️
 
 Étape 2 : Résolution du nom de domaine (dns.c) ✅️
 
 - Utiliser getaddrinfo pour convertir google.com en IP ✅️
  
-Étape 3 : Créer la raw socket (socket.c) ❌
+Étape 3 : Créer la raw socket (socket.c) ✅️
 
-- Ouvrir la socket avec IPPROTO_ICMP  ❌
+- Ouvrir la socket avec IPPROTO_ICMP  ✅️
 
-Étape 4 : Construire le paquet ICMP (packet.c)❌
+Étape 4 : Construire le paquet ICMP (packet.c) ✅️
 
-- Remplir les champs du header ICMP (type, code, id, sequence, checksum) ❌
-- Calculer le checksum ❌
+- Remplir les champs du header ICMP (type, code, id, sequence, checksum) ✅️
+- Calculer le checksum ✅️
  
-Étape 5 : Envoyer et recevoir (ping.c)❌
+Étape 5 : Envoyer et recevoir (ping.c) ✅️ 
 
-- gettimeofday + sendto + recvfrom + gettimeofday ❌
-- Calculer et afficher le temps ❌
+- gettimeofday + sendto + recvfrom + gettimeofday ✅️
+- Calculer et afficher le temps ✅️
 
 Étape 6 : Gestion du Ctrl+C (signal.c)❌
 
@@ -42,23 +42,6 @@ Je n'ai pas encore tester:
 void    build_icmp_header(struct icmphdr *icmphdr, int sequence) -> packet.c
 - send_ping -> ping.c
 - receive_ping(int raw_socket, struct sockaddr *addr) -> ping.c
+- ping_loop -> ping.c
 
-
-ping.c
-Je suis en train de faire la fonction:
-ping_loop
-
-
-
-// Signaux
-void handler(int signum)
-{
-	if (signum == SIGINT)
-		pingloop = 0;
-	else if (signum == SIGALRM)
-		send_packet = 1;
-}
-
-	signal(SIGINT, &handler);
-	signal(SIGALRM, &handler);
-
+Je suis a signal.c 

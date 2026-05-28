@@ -4,7 +4,7 @@
 ** Calcule le checksum ICMP en additionnant les donnees par mots de 16 bits (2 octets mis côte à côte),
 ** en gerant le depassement, puis en inversant les bits du resultat.
 */
-uint16_t calculate_checksum(void *data, int len)
+static uint16_t calculate_checksum(void *data, int len)
 {
 	uint32_t sum; 
 	
