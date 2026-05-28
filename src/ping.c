@@ -41,13 +41,52 @@ int receive_ping(int raw_socket, struct sockaddr *addr)
 	return (-1);
 }
 
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
 
 
+void handler(int sig)
+{
+    (void)sig;
+    printf("\nArrêt propre du programme\n");
+}
 
-ping_loop c'est la boucle principale de ft_ping. Elle doit :
+void    ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip)
+{	
+	char *destinataire;
+	char *str;
+	int start;
+	int end;
+	int sequence;
 
-Afficher la ligne de départ : PING google.com (172.217.22.110): 56 data bytes
-Boucler indéfiniment jusqu'au Ctrl+C :
+	destinataire = NULL;
+	str = NULL;
+	start = 0;
+	end = 0;
+	sequence = 0;
+	int result ;
+	result = 0;
+	while (1)
+	{
+		signal(SIGINT, handler);
+		destinataire = get_destination(argc, argv);
+		str = ip_to_str(results);
+		build_icmp_header(icmphdr, sequence);
+		gettimeofday(start);
+		// Je suis ici
+		send_ping(raw_socket, struct icmphdr *icmphdr, addr);
+		receive_ping(raw_socket, addr);
+		gettimeofday(end);
+		result = end - start;
+		printf(result);
+		sequence++;
+		wait(1);
+		printf("PING %s\n (%s): 56 data bytes ",  destinataire, str);
+	}
+}
+
+
 
 Construire le header ICMP avec build_icmp_header
 Démarrer le chronomètre
@@ -59,34 +98,4 @@ Incrémenter la sequence
 Attendre 1 seconde
 
 
-
-La signature :
-void    ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip);
-
-ping_loop -> la boucle principale qui appelle les deux
-
-
-
-- gettimeofday + sendto + recvfrom + gettimeofday ❌
-- Calculer et afficher le temps ❌
-
-
-
-
----
-
-## gettimeofday
-Fonction qui permet de mesurer le temps en C.
-Exemple : `time=15ms`
-
-### Principe
-```
-1. gettimeofday(start)
-2. sendto()
-3. recvfrom()
-4. gettimeofday(end)
-5. résultat = end - start
-```
-
-ping.c → sendto + recvfrom + gettimeofday
 
