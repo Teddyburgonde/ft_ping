@@ -1,10 +1,16 @@
 #include "../includes/ft_ping.h"
 
+bool g_running = true;
+
 void handler(int sig)
 {
 	(void)sig;
-	printf("\nArrêt propre du programme\n");
+
+	g_running = false;
 }
+
+
+
 
 
 // Nombre de paquets envoyés

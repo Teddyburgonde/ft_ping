@@ -45,3 +45,6 @@ void    build_icmp_header(struct icmphdr *icmphdr, int sequence) -> packet.c
 - ping_loop -> ping.c
 
 Je suis a signal.c 
+
+- Revoir si ma structure s_stats je ne peux pas utiliser dans chaque fonction. 
+- Voir a la fin pour refactoriser mon code

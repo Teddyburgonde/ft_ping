@@ -13,7 +13,7 @@
 #include <netinet/ip_icmp.h>
 #include <signal.h>
 
-
+extern g_running;
 
 typedef struct s_stats
 {

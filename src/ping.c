@@ -64,7 +64,7 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 	time_result = 0;
 	signal(SIGINT, handler);
 	printf("PING %s\n (%s): 56 data bytes ",  hostname, ip);
-	while (1)
+	while (g_running)
 	{
 		build_icmp_header(&icmphdr, sequence);
 		gettimeofday(&start, NULL);
@@ -86,6 +86,7 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 		sequence++;
 		sleep(1);
 	}
+	
 }
 
 
