@@ -1,6 +1,6 @@
 #include "../includes/ft_ping.h"
 
-void print_stats(t_stats *stats, char *hostname)
+void	print_stats(t_stats *stats, char *hostname)
 {
 	printf("--- %s ping statistics ---", hostname);
 	printf("%s  %s %d", stats->packets_sent, stats->packets_received, pourcentage perte);

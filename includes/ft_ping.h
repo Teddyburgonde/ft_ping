@@ -43,11 +43,14 @@ int		is_root(void);
 /* ping.c */
 void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, t_stats *stats);
 
+/* print.c */
+void	print_stats(t_stats *stats, char *hostname);
 
 /* signal.c */
 void	handler(int sig);
 
 /* socket.c */
 int		create_raw_socket(void);
+
 
 #endif
