@@ -9,7 +9,6 @@ int	main(int argc, char **argv)
 	t_stats stats;
 	int raw_socket;
 
-
 	memset(&stats, 0, sizeof(stats));
 	results = NULL;
 	verbose = 0;
@@ -27,8 +26,8 @@ int	main(int argc, char **argv)
 	if (strcmp(argv[1], "-v") == 0)
     	verbose = 1;
 	raw_socket = create_raw_socket();
-	g_stats = &stats;
-	ping_loop(raw_socket, results->ai_addr, destination, ip, &stats);
+	ping_loop(raw_socket, results->ai_addr, destination, ip, &stats, verbose);
+	print_stats(&stats, destination);
 	freeaddrinfo(results);
 
 	return (0);

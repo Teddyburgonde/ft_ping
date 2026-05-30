@@ -33,9 +33,8 @@ void    build_icmp_header(struct icmphdr *icmphdr, int sequence)
 	icmphdr->type = ICMP_ECHO; 
 	icmphdr->code = 0;
 	icmphdr->checksum = 0;
-	icmphdr->id = getpid();
-	icmphdr->sequence = sequence;
-	icmphdr->checksum = calculate_checksum(icmphdr, sizeof(struct icmphdr));
+	icmphdr->un.echo.id = getpid();
+	icmphdr->un.echo.sequence= sequence;
+	icmphdr->checksum= calculate_checksum(icmphdr, sizeof(struct icmphdr));
 }
-
 

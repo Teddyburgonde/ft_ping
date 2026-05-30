@@ -50,7 +50,7 @@ static int receive_ping(int raw_socket, struct sockaddr *addr,  int *ttl)
 ** Envoie un paquet ICMP Echo Request chaque seconde et affiche le resultat.
 ** S'arrete proprement sur Ctrl+C via le signal SIGINT.
 */
-void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, t_stats *stats)
+void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, t_stats *stats, int verbose)
 {	
 	int sequence;
 	struct icmphdr icmphdr;
@@ -63,7 +63,10 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 	sequence = 0;
 	time_result = 0;
 	signal(SIGINT, handler);
-	printf("PING %s\n (%s): 56 data bytes ",  hostname, ip);
+	if (verbose == 1)
+		print_verbose(hostname, ip, 56);
+	else
+		printf("PING %s (%s): 56 data bytes\n",  hostname, ip);
 	while (g_running)
 	{
 		build_icmp_header(&icmphdr, sequence);
@@ -73,7 +76,7 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 		nb_bytes = receive_ping(raw_socket, addr, &ttl);
 		gettimeofday(&end, NULL);
 		time_result = (end.tv_sec - start.tv_sec) * 1000.0 + (end.tv_usec - start.tv_usec) / 1000.0;
-        if (nb_bytes != -1)
+		if (nb_bytes != -1)
 		{
 			stats->packets_received++;
             if (stats->time_min == 0 || time_result < stats->time_min)
@@ -86,8 +89,8 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 		sequence++;
 		sleep(1);
 	}
-	
 }
+
 
 
 

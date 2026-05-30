@@ -13,17 +13,16 @@
 #include <netinet/ip_icmp.h>
 #include <signal.h>
 
-extern g_running;
+extern bool g_running;
 
 typedef struct s_stats
 {
-    int     packets_sent;
-    int     packets_received;
-    double  time_min;
-    double  time_max;
-    double  time_total;
+	int		packets_sent;
+	int		packets_received;
+	double	time_min;
+	double	time_max;
+	double	time_total;
 } t_stats;
-
 
 
 /* dns.c */
@@ -45,6 +44,7 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 
 /* print.c */
 void	print_stats(t_stats *stats, char *hostname);
+void	print_verbose(char *hostname, char *ip_str, int payload_size);
 
 /* signal.c */
 void	handler(int sig);
