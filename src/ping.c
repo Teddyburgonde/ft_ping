@@ -42,10 +42,10 @@ static int receive_ping(int raw_socket, struct sockaddr *addr,  int *ttl)
 	}
 	*ttl = ip_header->ttl;
 	struct icmphdr *icmp = (struct icmphdr *)(buffer + 20);
-	if (icmp->un.echo.id == getpid())
-	{
-		return nb_octets;
-	}
+	if (icmp->type == ICMP_TIME_EXCEEDED)
+    	return (-2);
+	if (icmp->type == ICMP_ECHOREPLY && icmp->un.echo.id == getpid())
+    	return nb_octets;
 	return (-1);
 }
 
@@ -79,9 +79,11 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 		send_ping(raw_socket, &icmphdr, addr);
 		stats->packets_sent++;
 		nb_bytes = receive_ping(raw_socket, addr, &ttl);
+		if (nb_bytes == -2 && verbose)
+    		printf("From %s: icmp_seq=%d Time to live exceeded\n", ip, sequence);
 		gettimeofday(&end, NULL);
 		time_result = (end.tv_sec - start.tv_sec) * 1000.0 + (end.tv_usec - start.tv_usec) / 1000.0;
-		if (nb_bytes != -1)
+		if (nb_bytes > 0)
 		{
 			stats->packets_received++;
             if (stats->time_min == 0 || time_result < stats->time_min)
@@ -90,7 +92,8 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 				stats->time_max = time_result;
 			stats->time_total += time_result;
 			stats->time_total_sq += time_result * time_result;
-			printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", nb_bytes -20, ip, sequence, ttl, time_result);
+			if (nb_bytes > 20)
+				printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", nb_bytes -20, ip, sequence, ttl, time_result);
 		}
 		sequence++;
 		sleep(1);

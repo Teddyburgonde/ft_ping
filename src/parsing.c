@@ -41,7 +41,7 @@ void parse_args(int argc, char **argv)
 	}
 	if (argc == 3)
 	{
-		if (strcmp(argv[1], "-v") != 0 && strcmp(argv[1], "-?") != 0)
+		if (strcmp(argv[1], "-v") != 0 && strcmp(argv[1], "-?") != 0 && strncmp(argv[1], "--ttl=", 6) != 0)
 		{
 			printf("Error, ./ft_ping -v recipient\n");
 			exit (1);

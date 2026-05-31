@@ -37,7 +37,6 @@ char	*ip_to_str(struct addrinfo *results);
 /* packet.c */
 void    build_icmp_header(struct icmphdr *icmphdr, int sequence);
 
-
 /* parsing.c */
 char	*get_destination(int argc, char **argv);
 void	parse_args(int argc, char **argv);
@@ -56,6 +55,7 @@ void	handler(int sig);
 
 /* socket.c */
 int		create_raw_socket(void);
-
+void	set_ttl(int raw_socket, int ttl);
+int		get_ttl(int argc, char **argv);
 
 #endif

@@ -26,6 +26,7 @@ int	main(int argc, char **argv)
 	if (strcmp(argv[1], "-v") == 0)
     	verbose = 1;
 	raw_socket = create_raw_socket();
+	set_ttl(raw_socket, get_ttl(argc, argv));
 	ping_loop(raw_socket, results->ai_addr, destination, ip, &stats, verbose);
 	print_stats(&stats, destination);
 	freeaddrinfo(results);

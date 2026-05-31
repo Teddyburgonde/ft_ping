@@ -243,3 +243,8 @@ Test 10 - Hostname inexistant ✅
 Commande : sudo ./ft_ping hostname_inexistant
 Resultat attendu : ft_ping: unknown host
 ```
+
+
+
+#define ICMP_DEST_UNREACH        3        /* Destination Unreachable  
+#define ICMP_TIME_EXCEEDED        11        /* Time Exceeded                */
