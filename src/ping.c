@@ -25,14 +25,17 @@ static void send_ping(int raw_socket, struct icmphdr *icmphdr, struct sockaddr *
 ** Recupere le TTL depuis le header IP du paquet reçu.
 ** Retourne le nombre d'octets reçus ou -1 en cas d'erreur.
 */
-static int receive_ping(int raw_socket, struct sockaddr *addr,  int *ttl)
+static int receive_ping(int raw_socket, struct sockaddr *addr, int *ttl, char **error_ip)
 {
+	(void)addr;
 	int nb_octets;
 	char buffer[1024];
-	socklen_t addr_len = sizeof(*addr);
 	struct iphdr *ip_header = (struct iphdr *)buffer;
-	
-	nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, addr, &addr_len);
+	struct sockaddr_in sender;
+	socklen_t addr_len = sizeof(sender);
+	nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, (struct sockaddr *)&sender, &addr_len);
+
+	// nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, addr, &addr_len);
 	if (nb_octets == -1)
 	{
 		if (errno == EAGAIN || errno == EWOULDBLOCK)
@@ -43,7 +46,10 @@ static int receive_ping(int raw_socket, struct sockaddr *addr,  int *ttl)
 	*ttl = ip_header->ttl;
 	struct icmphdr *icmp = (struct icmphdr *)(buffer + 20);
 	if (icmp->type == ICMP_TIME_EXCEEDED)
+	{
+		*error_ip = inet_ntoa(*(struct in_addr *)&ip_header->saddr);
     	return (-2);
+	}
 	if (icmp->type == ICMP_ECHOREPLY && icmp->un.echo.id == getpid())
     	return nb_octets;
 	return (-1);
@@ -78,9 +84,10 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 		gettimeofday(&start, NULL);
 		send_ping(raw_socket, &icmphdr, addr);
 		stats->packets_sent++;
-		nb_bytes = receive_ping(raw_socket, addr, &ttl);
-		if (nb_bytes == -2 && verbose)
-    		printf("From %s: icmp_seq=%d Time to live exceeded\n", ip, sequence);
+		char *error_ip = NULL;
+		nb_bytes = receive_ping(raw_socket, addr, &ttl, &error_ip);
+		if (nb_bytes == -2)
+			printf("76 bytes from %s: icmp_seq=%d Time to live exceeded\n", error_ip, sequence);
 		gettimeofday(&end, NULL);
 		time_result = (end.tv_sec - start.tv_sec) * 1000.0 + (end.tv_usec - start.tv_usec) / 1000.0;
 		if (nb_bytes > 0)
