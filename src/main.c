@@ -29,6 +29,5 @@ int	main(int argc, char **argv)
 	ping_loop(raw_socket, results->ai_addr, destination, ip, &stats, verbose);
 	print_stats(&stats, destination);
 	freeaddrinfo(results);
-
 	return (0);
 }

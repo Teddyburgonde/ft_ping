@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <netinet/ip_icmp.h>
 #include <signal.h>
+#include <sys/time.h>
+#include <math.h>
 
 extern bool g_running;
 
@@ -22,6 +24,7 @@ typedef struct s_stats
 	double	time_min;
 	double	time_max;
 	double	time_total;
+	double  time_total_sq;
 } t_stats;
 
 
@@ -40,7 +43,7 @@ void	parse_args(int argc, char **argv);
 int		is_root(void);
 
 /* ping.c */
-void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, t_stats *stats);
+void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, t_stats *stats, int verbose);
 
 /* print.c */
 void	print_stats(t_stats *stats, char *hostname);

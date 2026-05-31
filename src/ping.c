@@ -8,7 +8,10 @@ static void send_ping(int raw_socket, struct icmphdr *icmphdr, struct sockaddr *
 {
 	int statut;
 
-	statut = sendto(raw_socket, icmphdr, sizeof(struct icmphdr), 0, addr, sizeof(*addr));
+	char packet[sizeof(struct icmphdr) + 56];
+	memset(packet, 0, sizeof(packet));
+	memcpy(packet, icmphdr, sizeof(struct icmphdr));
+	statut = sendto(raw_socket, packet, sizeof(packet), 0, addr, sizeof(*addr));
 	if (statut == -1)
 	{
 		perror("sendto");
@@ -84,7 +87,8 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
             if (time_result > stats->time_max)
 				stats->time_max = time_result;
 			stats->time_total += time_result;
-			printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", nb_bytes, ip, sequence, ttl, time_result);
+			stats->time_total_sq += time_result * time_result;
+			printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3f ms\n", nb_bytes -20, ip, sequence, ttl, time_result);
 		}
 		sequence++;
 		sleep(1);

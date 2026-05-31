@@ -35,7 +35,7 @@ RM = rm -f
 all: $(NAME)
 
 $(NAME) : $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lm
 	@echo $(dark_green)"Executable is ready"
 
 clean: 
