@@ -38,7 +38,7 @@ static int receive_ping(int raw_socket, struct sockaddr *addr, int *ttl, char **
 	// nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, addr, &addr_len);
 	if (nb_octets == -1)
 	{
-		if (errno == EAGAIN || errno == EWOULDBLOCK)
+		if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)
         	return (-1);
 		perror("recvfrom");
 		return (-1);
