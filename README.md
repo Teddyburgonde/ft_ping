@@ -155,18 +155,91 @@ if (getuid() != 0)
 4. recvfrom()     → recevoir la réponse
 ```
 
+---
 
 ## Structure
 
+```
 ft_ping/
 ├── Makefile
 ├── includes/
 │   └── ft_ping.h
 └── src/
-    ├── main.c          -> point d'entrée, vérification root, parsing args
-    ├── socket.c        -> création de la raw socket
-    ├── dns.c           -> getaddrinfo (nom de domaine → IP)
-    ├── packet.c        -> construction du header ICMP + checksum
-    ├── ping.c          -> sendto + recvfrom + gettimeofday
-    └── signal.c        -> gestion du SIGINT + affichage des statistiques
+    ├── main.c      -> point d'entrée, vérification root, parsing args
+    ├── socket.c    -> création de la raw socket
+    ├── dns.c       -> getaddrinfo (nom de domaine → IP)
+    ├── packet.c    -> construction du header ICMP + checksum
+    ├── ping.c      -> sendto + recvfrom + gettimeofday
+    ├── print.c     -> print_verbose, print_stats, print_help
+    └── signal.c    -> gestion du SIGINT
+```
 
+---
+
+## Tests
+
+```
+==========================================
+        TESTS ft_ping - Liste complete
+==========================================
+
+Test 1 - Sans arguments ✅
+------------------------
+Commande : ./ft_ping
+Resultat attendu : Error, Incorrect number of arguments
+
+Test 2 - Sans root ✅
+------------------------
+Commande : ./ft_ping google.com
+Resultat attendu : Error, ft_ping: must be run as root
+
+Test 3 - Mauvais argument ✅
+------------------------
+Commande : ./ft_ping -b google.com
+Resultat attendu : Error, ./ft_ping -v recipient
+
+Test 4 - Normal ✅
+------------------------
+Commande : sudo ./ft_ping google.com
+Resultat attendu :
+PING google.com (172.217.22.110): 56 data bytes
+64 bytes from 172.217.22.110: icmp_seq=0 ttl=116 time=18.553 ms
+64 bytes from 172.217.22.110: icmp_seq=1 ttl=116 time=18.553 ms
+...
+
+Test 5 - Verbose ✅
+------------------------
+Commande : sudo ./ft_ping -v google.com
+Resultat attendu :
+PING google.com (172.217.22.110): 56 data bytes, id 0x1234 = 4660
+64 bytes from 172.217.22.110: icmp_seq=0 ttl=116 time=18.553 ms
+...
+
+Test 6 - Ctrl+C (statistiques) ✅
+------------------------
+Commande : sudo ./ft_ping google.com puis Ctrl+C
+Resultat attendu :
+--- google.com ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 18.553/22.000/23.761/2.034 ms
+
+Test 7 - Adresse IP directe ✅
+------------------------
+Commande : sudo ./ft_ping 8.8.8.8
+Resultat attendu : meme affichage qu'avec un hostname
+
+Test 8 - Option -? ✅
+------------------------
+Commande : ./ft_ping -?
+Resultat attendu : affichage de l'aide (identique a ping -?)
+
+Test 9 - Trop d'arguments ✅
+------------------------
+Commande : sudo ./ft_ping -v google.com lol
+Resultat attendu : Error, Incorrect number of arguments
+
+Test 10 - Hostname inexistant ✅
+------------------------
+Commande : sudo ./ft_ping hostname_inexistant
+Resultat attendu : ft_ping: unknown host
+```

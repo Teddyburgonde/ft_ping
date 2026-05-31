@@ -48,6 +48,7 @@ void	ping_loop(int raw_socket, struct sockaddr *addr, char *hostname, char *ip, 
 /* print.c */
 void	print_stats(t_stats *stats, char *hostname);
 void	print_verbose(char *hostname, char *ip_str, int payload_size);
+void	print_help(void);
 
 /* signal.c */
 void	handler(int sig);

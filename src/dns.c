@@ -15,7 +15,7 @@ struct addrinfo	*hostname_to_ip(char *hostname)
 	status = getaddrinfo(hostname, NULL, &hints, &results);
 	if (status != 0)
 	{
-		printf("ft_ping: %s: %s\n", hostname, gai_strerror(status));
+		printf("ft_ping: unknown host\n");
 		exit(1);
 	}
 	return results;

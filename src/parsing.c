@@ -47,6 +47,11 @@ void parse_args(int argc, char **argv)
 			exit (1);
 		}
 	}
+	if (strcmp(argv[1], "-?") == 0)
+	{
+		print_help();
+		exit(0);
+	}
 	if (is_root() == false)
 	{
 		printf("Error, ft_ping: must be run as root\n");
