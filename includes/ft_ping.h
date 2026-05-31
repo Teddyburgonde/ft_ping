@@ -14,6 +14,7 @@
 #include <signal.h>
 #include <sys/time.h>
 #include <math.h>
+#include <errno.h>
 
 extern bool g_running;
 

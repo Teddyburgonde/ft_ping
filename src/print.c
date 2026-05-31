@@ -11,11 +11,14 @@ void	print_stats(t_stats *stats, char *hostname)
 	double stddev;
 	
 	loss = ((stats->packets_sent - stats->packets_received) * 100) / stats->packets_sent;
-	average = stats->time_total / stats->packets_received;
-	stddev = sqrt((stats->time_total_sq / stats->packets_received) - (average * average));
 	printf("--- %s ping statistics ---\n", hostname);
 	printf("%d packets transmitted, %d packets received, %.0f%% packet loss\n", stats->packets_sent, stats->packets_received, loss);
-	printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", stats->time_min, average, stats->time_max, stddev);
+	if (stats->packets_received > 0)
+	{
+		average = stats->time_total / stats->packets_received;
+		stddev = sqrt((stats->time_total_sq / stats->packets_received) - (average * average));
+		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n", stats->time_min, average, stats->time_max, stddev);
+	}
 }
 
 /*
