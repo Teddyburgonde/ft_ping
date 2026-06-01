@@ -5,7 +5,7 @@ C'est une socket où je construis moi-même le header ICMP
 */
 int create_raw_socket(void)
 {
-	int raw_socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+	int raw_socket;
 	struct timeval timeout;
 
 	raw_socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
