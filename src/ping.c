@@ -31,22 +31,26 @@ static int receive_ping(int raw_socket, struct sockaddr *addr, int *ttl, char **
 	int nb_octets;
 	char buffer[1024];
 	struct iphdr *ip_header = (struct iphdr *)buffer;
+	
+	// structure qui stocke les informations de celui qui nous a envoyé le paquet
 	struct sockaddr_in sender;
 	socklen_t addr_len = sizeof(sender);
 	nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, (struct sockaddr *)&sender, &addr_len);
 
-	// nb_octets = recvfrom(raw_socket, buffer, sizeof(buffer), 0, addr, &addr_len);
 	if (nb_octets == -1)
 	{
-		if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
         	return (-1);
 		perror("recvfrom");
 		return (-1);
 	}
 	*ttl = ip_header->ttl;
+	// [ 20 octets header IP | header ICMP | payload ]
 	struct icmphdr *icmp = (struct icmphdr *)(buffer + 20);
 	if (icmp->type == ICMP_TIME_EXCEEDED)
 	{
+		// on recupere l'adresse Ip du routeur où le paquet 
+		// s'est arrêté parce que le TTL est arrivé à 0.
 		*error_ip = inet_ntoa(*(struct in_addr *)&ip_header->saddr);
     	return (-2);
 	}
